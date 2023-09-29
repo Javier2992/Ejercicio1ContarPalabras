@@ -7,14 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-
-import java.awt.font.TextAttribute;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private EditText editTextFrase;
-    private Button btnLetras;
-    private Button btnPalabras;
+    private Button btnLetrasMain;
+    private Button btnPalabrasMain;
 
 
 
@@ -24,41 +22,56 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         inicializar();
-
         String frase = editTextFrase.getText().toString();
 
-        btnPalabras.setOnClickListener(new View.OnClickListener() {
+
+        btnPalabrasMain.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                editTextFrase.setText(frase);
-                Intent intent = new Intent(MainActivity.this,
-                        SecondaryActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString(frase, frase);
-                intent.putExtras(bundle);
-                startActivity(intent);
+            public void onClick(View view){
+
+                if(editTextFrase.length()>0){
+                    int contarPalabras = frase.split(" ").length;
+                    String mensaje= " El numero de palabras es "+ contarPalabras;
+                    crearNuevaActividad(mensaje);
+                }else{
+                    Toast.makeText(MainActivity.this, " Escribe algoo",Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
-
-      btnLetras.setOnClickListener(new View.OnClickListener() {
+//Podriamos hacer las funciones onClick con una funcion comun que hiciera una accion o otra segun el
+// identificador del boton que ha sido pulsado para ahorrar trabajo
+      btnLetrasMain.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-              editTextFrase.setText(frase);Intent intent = new Intent(MainActivity.this,
-                      SecondaryActivity.class);
-              Intent inten = new Intent(MainActivity.this,
-                      SecondaryActivity.class);
-              Bundle bundle = new Bundle();
-              bundle.putString(frase, frase);
-              intent.putExtras(bundle);
-              startActivity(inten);
+              if(editTextFrase.length()>0){
+                  int contarPalabras = frase.trim().length();
+                  String mensaje= " El numero de letras es "+ contarPalabras;
+                  crearNuevaActividad(mensaje);
+              }else{
+                  Toast.makeText(MainActivity.this, " Escribe algoo",Toast.LENGTH_SHORT).show();
+              }
+
+
 
           }
       });
     }
+    private void crearNuevaActividad(String mensaje){
+        Intent intent = new Intent(MainActivity.this,
+                SecondaryActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("MSG", mensaje);
+        intent.putExtras(bundle);
+        intent.putExtras(bundle);
+
+    }
+
 
     private void inicializar() {
-editTextFrase.findViewById(R.id.editTextFrase);
-btnLetras.findViewById(R.id.btnLetras);
-btnPalabras.findViewById(R.id.btnPalabras);
+editTextFrase =findViewById(R.id.editTextFrase);
+btnLetrasMain=findViewById(R.id.btnLetrasMain);
+btnPalabrasMain=findViewById(R.id.btnPalabrasMain);
     }
 }
